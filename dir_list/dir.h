@@ -16,7 +16,6 @@ extern "C" {
 
 struct dir_list {
 	char dir_name[20];
-	char list[500];
 };
 typedef struct dir_list dir_list;
 
@@ -25,14 +24,14 @@ typedef struct dir_list dir_list;
 
 #if defined(__STDC__) || defined(__cplusplus)
 #define print_dir 1
-extern  char ** print_dir_2(dir_list *, CLIENT *);
-extern  char ** print_dir_2_svc(dir_list *, struct svc_req *);
+extern  int * print_dir_2(dir_list *, CLIENT *);
+extern  int * print_dir_2_svc(dir_list *, struct svc_req *);
 extern int compute_2_freeresult (SVCXPRT *, xdrproc_t, caddr_t);
 
 #else /* K&R C */
 #define print_dir 1
-extern  char ** print_dir_2();
-extern  char ** print_dir_2_svc();
+extern  int * print_dir_2();
+extern  int * print_dir_2_svc();
 extern int compute_2_freeresult ();
 #endif /* K&R C */
 

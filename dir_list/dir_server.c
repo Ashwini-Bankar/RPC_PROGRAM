@@ -6,36 +6,36 @@
 
 #include "dir.h"
 #include<stdio.h>
-#include<string.h>
+#include<rpc/rpc.h>
 #include<dirent.h>
-char ** print_dir_2_svc(dir_list *argp, struct svc_req *rqstp)
+int *print_dir_2_svc(dir_list *argp, struct svc_req *rqstp)
 {
-	static char ** result;
+	static int  result;
+
 	DIR* dirp;
-	char l1[500];
-	char *l;
-	l=l1;
 	struct dirent* direntp;
+
 	dirp = opendir(argp->dir_name);
 	if( dirp == NULL )
 	{
-		printf( "can't open %s directory",argp->dir_name );
+		printf("Can't open %s directory",argp->dir_name );
 	}
 	else
 	{
+	
 		for(;;)
-		{
-			direntp = readdir( dirp );
-			if( direntp == NULL ) break;
+                {
+                        direntp = readdir( dirp );
+                        if( direntp == NULL ) break;
 
-			strcat(l1,direntp->d_name);
-			strcat(l1,"\n");
-		}
+                        printf( "%s\n", direntp->d_name );
+                }
+
+                closedir( dirp );
 
 	}
-	result=&l;
 
 
 
-	return (result);
+	return &result;
 }

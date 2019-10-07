@@ -6,12 +6,12 @@
 #include "dir.h"
 
 bool_t
-xdr_dir_list (XDR *xdrs, dir_list *objp)
+xdr_dirlist (XDR *xdrs, dirlist *objp)
 {
 	register int32_t *buf;
 
 	int i;
-	 if (!xdr_vector (xdrs, (char *)objp->dir_name, 20,
+	 if (!xdr_vector (xdrs, (char *)objp->name, 20,
 		sizeof (char), (xdrproc_t) xdr_char))
 		 return FALSE;
 	return TRUE;

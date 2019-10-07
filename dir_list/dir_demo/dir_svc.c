@@ -17,10 +17,10 @@
 #endif
 
 static void
-compute_2(struct svc_req *rqstp, register SVCXPRT *transp)
+dirprog_1(struct svc_req *rqstp, register SVCXPRT *transp)
 {
 	union {
-		dir_list print_dir_2_arg;
+		dirlist readdir_1_arg;
 	} argument;
 	char *result;
 	xdrproc_t _xdr_argument, _xdr_result;
@@ -31,10 +31,10 @@ compute_2(struct svc_req *rqstp, register SVCXPRT *transp)
 		(void) svc_sendreply (transp, (xdrproc_t) xdr_void, (char *)NULL);
 		return;
 
-	case print_dir:
-		_xdr_argument = (xdrproc_t) xdr_dir_list;
-		_xdr_result = (xdrproc_t) xdr_int;
-		local = (char *(*)(char *, struct svc_req *)) print_dir_2_svc;
+	case READDIR:
+		_xdr_argument = (xdrproc_t) xdr_dirlist;
+		_xdr_result = (xdrproc_t) xdr_wrapstring;
+		local = (char *(*)(char *, struct svc_req *)) readdir_1_svc;
 		break;
 
 	default:
@@ -62,15 +62,15 @@ main (int argc, char **argv)
 {
 	register SVCXPRT *transp;
 
-	pmap_unset (COMPUTE, COPMPUTE_VERS);
+	pmap_unset (DIRPROG, DIRVERS);
 
 	transp = svcudp_create(RPC_ANYSOCK);
 	if (transp == NULL) {
 		fprintf (stderr, "%s", "cannot create udp service.");
 		exit(1);
 	}
-	if (!svc_register(transp, COMPUTE, COPMPUTE_VERS, compute_2, IPPROTO_UDP)) {
-		fprintf (stderr, "%s", "unable to register (COMPUTE, COPMPUTE_VERS, udp).");
+	if (!svc_register(transp, DIRPROG, DIRVERS, dirprog_1, IPPROTO_UDP)) {
+		fprintf (stderr, "%s", "unable to register (DIRPROG, DIRVERS, udp).");
 		exit(1);
 	}
 
@@ -79,8 +79,8 @@ main (int argc, char **argv)
 		fprintf (stderr, "%s", "cannot create tcp service.");
 		exit(1);
 	}
-	if (!svc_register(transp, COMPUTE, COPMPUTE_VERS, compute_2, IPPROTO_TCP)) {
-		fprintf (stderr, "%s", "unable to register (COMPUTE, COPMPUTE_VERS, tcp).");
+	if (!svc_register(transp, DIRPROG, DIRVERS, dirprog_1, IPPROTO_TCP)) {
+		fprintf (stderr, "%s", "unable to register (DIRPROG, DIRVERS, tcp).");
 		exit(1);
 	}
 

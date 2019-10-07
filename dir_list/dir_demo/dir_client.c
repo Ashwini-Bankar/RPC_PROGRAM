@@ -5,26 +5,25 @@
  */
 
 #include "dir.h"
-#include<string.h>
-#include<stdio.h>
-#include<rpc/rpc.h>
 
-int compute_2(char *host,char dname[])
+
+char* dirprog_1(char *host,char nm[])
 {
 	CLIENT *clnt;
-	int  *result_1;
-	dir_list  print_dir_2_arg;
-	strcpy(print_dir_2_arg.dir_name,dname);
+	char * *result_1;
+	dirlist  readdir_1_arg;
+	strcpy(readdir_1_arg.name,nm);
 
-	clnt = clnt_create (host, COMPUTE, COPMPUTE_VERS, "udp");
+
+	clnt = clnt_create (host, DIRPROG, DIRVERS, "udp");
 	if (clnt == NULL) {
 		clnt_pcreateerror (host);
 		exit (1);
 	}
 
 
-	result_1 = print_dir_2(&print_dir_2_arg, clnt);
-	if (result_1 == (int *) NULL) {
+	result_1 = readdir_1(&readdir_1_arg, clnt);
+	if (result_1 == (char **) NULL) {
 		clnt_perror (clnt, "call failed");
 	}
 
@@ -34,17 +33,23 @@ int compute_2(char *host,char dname[])
 }
 
 
-int main (int argc, char *argv[])
+int
+main (int argc, char *argv[])
 {
 	char *host;
-	char dnm[20];
+	char dn[20],*n;
+
 	if (argc < 2) {
 		printf ("usage: %s server_host\n", argv[0]);
 		exit (1);
 	}
 	host = argv[1];
 	printf("Enter directory name");
-	scanf("%s",dnm);
-	printf("%d",compute_2 (host,dnm));
+	scanf("%s",dn);
+	printf("%s",dirprog_1 (host,dn));
+	
+
+
+
 exit (0);
 }
